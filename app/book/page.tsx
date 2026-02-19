@@ -32,7 +32,7 @@ export default function BookPage() {
   </p>
 
   {/* Main Heading */}
-  <h1 className="text-5xl font-serif font-bold leading-tight">
+  <h1 className="text-5xl font-serif font-bold leading-tight bg-gradient-to-r from-white via-gray-400 to-blue-400 bg-clip-text text-transparent animate-gradient">
     Book Your Appointment
   </h1>
 
@@ -51,12 +51,12 @@ export default function BookPage() {
 
   <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 px-5 py-4 rounded-2xl">
     <Clock className="w-5 h-5 text-blue-200" />
-    <span>Modern equipment with gentle, painless care</span>
+    <span>Advanced technology with gentle & painless care</span>
   </div>
 
   <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 px-5 py-4 rounded-2xl">
     <MapPin className="w-5 h-5 text-blue-200" />
-    <span>Open Mon–Sat • 10AM–1PM & 4PM–8PM</span>
+    <span>Open Mon-Sat • 10AM-1PM & 4PM-8PM</span>
   </div>
 
 </div>

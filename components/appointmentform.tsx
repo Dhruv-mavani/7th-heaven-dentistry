@@ -3,10 +3,16 @@
 import { useState } from "react";
 
 const services = [
-  "Teeth Cleaning",
-  "Root Canal Treatment",
+  "Dental Fillings",
   "Braces & Aligners",
+  "Root Canal",
+  "Teeth Whitening",
   "Dental Implants",
+  "Pediatric Dentistry",
+  "Dentures",
+  "Cosmetic Dentistry",
+  "Cosmetic Surgery",
+  "Jaw Surgery",
 ];
 
 const slots = [
@@ -26,7 +32,7 @@ const slots = [
   "07:30 PM",
 ];
 
-export default function AppointmentWizard() {
+export default function AppointmentForm() {
   const [step, setStep] = useState(1);
 
   const [form, setForm] = useState({
@@ -169,6 +175,7 @@ export default function AppointmentWizard() {
 
       {/* STEP 1: Service */}
       {step === 1 && (
+        <div>
         <div className="grid grid-cols-2 gap-4">
           {services.map((s) => (
             <button
@@ -182,6 +189,13 @@ export default function AppointmentWizard() {
               {s}
             </button>
           ))}
+        </div>
+        <a
+        href="/"
+        className="block w-full bg-gray-100 text-gray-800 px-58 py-4 pt-3 mt-5 rounded-2xl font-semibold hover:bg-gray-200 transition"
+      >
+        Back to Home
+      </a>
         </div>
       )}
 
@@ -225,6 +239,13 @@ export default function AppointmentWizard() {
               Continue
             </button>
           </div>
+
+          <a
+        href="/"
+        className="block w-full bg-gray-100 text-gray-800 px-55 py-4 rounded-2xl font-semibold hover:bg-gray-200 transition"
+      >
+        Back to Home
+      </a>
         </div>
       )}
 
@@ -272,6 +293,13 @@ export default function AppointmentWizard() {
       </button>
     </div>
 
+    <a
+        href="/"
+        className="block w-full bg-gray-100 text-gray-800 px-55 py-4 rounded-2xl font-semibold hover:bg-gray-200 transition"
+      >
+        Back to Home
+      </a>
+
     {/* Warning */}
     {!form.time && (
       <p className="text-sm text-gray-500">
@@ -316,6 +344,12 @@ export default function AppointmentWizard() {
               {loading ? "Booking..." : "Confirm"}
             </button>
           </div>
+          <a
+        href="/"
+        className="block w-full bg-gray-100 text-gray-800 px-55 py-4 rounded-2xl font-semibold hover:bg-gray-200 transition"
+      >
+        Back to Home
+      </a>
         </div>
       )}
     </div>
