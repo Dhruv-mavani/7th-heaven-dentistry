@@ -38,6 +38,18 @@ export default function Dashboard() {
     fetchAppointments();
   }, []);
 
+  // Clear dots when the doctor views the dashboard
+useEffect(() => {
+  const clearAppointmentDots = async () => {
+    await supabase.from('appointments').update({ is_read: true }).eq('is_read', false);
+    window.dispatchEvent(new Event("new_appointment_received"));
+  };
+  
+  if (!loading) {
+    clearAppointmentDots();
+  }
+}, [loading]);
+
   async function checkUser() {
     const { data } = await supabase.auth.getUser();
     if (!data.user) router.push("/admin/login");
