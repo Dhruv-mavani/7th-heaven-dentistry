@@ -6,6 +6,12 @@ import { sendWhatsApp } from "./whatsapp.js";
 
 
 dotenv.config();
+import { createClient } from "@supabase/supabase-js";
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY
+);
+
 
 const app = express();
 app.use(cors());
@@ -15,16 +21,53 @@ app.get("/", (req, res) => {
   res.send("Dental Clinic Backend Running ✅");
 });
 
-app.post("/api/appointments", async (req, res) => {
-  const appointment = req.body;
+app.post("/api/contact", async (req, res) => {
+  try {
+    const { name, phone, message } = req.body;
 
-  await sendEmail(appointment);
+    const { data, error } = await supabase
+      .from("contact_messages")
+      .insert([
+        { name, phone, message }
+      ]);
 
-  res.json({
-    success: true,
-    message: "Appointment request sent successfully!",
-  });
+    if (error) {
+      console.error("Supabase error:", error);
+      return res.status(500).json({ error: "Failed to save message" });
+    }
+
+    res.json({ success: true });
+
+  } catch (err) {
+    console.error("Server error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
 });
+
+
+app.post("/api/appointments", async (req, res) => {
+  try {
+    const { name, phone, service, date, time } = req.body;
+
+    const { data, error } = await supabase
+      .from("appointments")
+      .insert([
+        { service, date, time, name, phone }
+      ]);
+
+    if (error) {
+      console.error("Supabase error:", error);
+      return res.status(500).json({ error: "Failed to save appointment" });
+    }
+
+    res.json({ success: true });
+
+  } catch (err) {
+    console.error("Server error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 
 
 app.listen(5000, () =>

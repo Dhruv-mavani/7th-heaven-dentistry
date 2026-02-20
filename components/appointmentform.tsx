@@ -101,10 +101,11 @@ export default function AppointmentForm() {
     return;
   }
 
-  if (!form.phone.trim()) {
-    alert("Please enter your phone number.");
-    return;
-  }
+  if (!/^[6-9]\d{9}$/.test(form.phone)) {
+  alert("Please enter a valid 10-digit phone number.");
+  return;
+}
+
 
   if (!form.time) {
     alert("Please select a valid time slot.");
@@ -323,13 +324,16 @@ export default function AppointmentForm() {
           />
 
           <input
-            placeholder="Phone Number"
-            value={form.phone}
-            onChange={(e) =>
-              setForm({ ...form, phone: e.target.value })
-            }
-            className="w-full p-5 border rounded-2xl"
-          />
+  placeholder="Phone Number"
+  type="tel"
+  maxLength={10}
+  value={form.phone}
+  onChange={(e) =>
+    setForm({ ...form, phone: e.target.value.replace(/\D/g, "") })
+  }
+  className="w-full p-5 border rounded-2xl"
+/>
+
 
           <div className="flex justify-between items-center">
             <button onClick={back} className="text-gray-500 hover:text-gray-800">

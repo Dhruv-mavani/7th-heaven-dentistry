@@ -1,7 +1,18 @@
+"use client";
+import { useState } from "react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { MapPin, Mail } from "lucide-react";
 
 export default function ContactPage() {
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({
+  name: "",
+  phone: "",
+  message: "",
+});
+
   return (
     <main>
       <Navbar solid />
@@ -25,46 +36,231 @@ export default function ContactPage() {
       </section>
 
       {/* ================= CONTACT INFO ================= */}
-      <section className="py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-8 grid md:grid-cols-2 gap-12">
+<section className="py-24 bg-white">
+  <div className="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-16">
 
-          {/* Info */}
-          <div className="space-y-6">
-            <h2 className="text-3xl font-serif font-bold text-gray-900">
-              Visit 7th Heaven Dentistry
-            </h2>
+    {/* LEFT SIDE - Contact Info */}
+    <div className="space-y-8">
 
-            <p className="text-gray-600 leading-relaxed">
-              📍 7th Heaven family dentistry, Bhagvati Society, Kamrej 394185<br />
-              🕒 Mon-Sat: 10AM-1PM & 4PM-8PM <br />
-              ❌ Closed Sundays
-            </p>
+      <div className="flex items-center gap-3">
+  <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-blue-100 text-blue-600">
+    <MapPin size={20} />
+  </div>
+  <h2 className="text-3xl font-serif font-bold bg-gradient-to-r from-black via-gray-600 to-blue-300 animate-gradient bg-clip-text text-transparent">
+    Visit 7th Heaven Dentistry
+  </h2>
+</div>
 
-            <p className="text-gray-600">
-              📞 Phone: +91 72111 77727
-            </p>
 
-            <a
-              href="https://wa.me/919825130447"
-              target="_blank"
-              className="inline-block px-8 py-4 rounded-2xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
-            >
-              Message on WhatsApp
-            </a>
-          </div>
+      <div className="space-y-4 text-gray-600 leading-relaxed">
+        <p>📍 Bhagvati Society, Kamrej 394185, Surat</p>
 
-          {/* Map Embed */}
-          <div className="rounded-3xl overflow-hidden shadow-lg border border-gray-200">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4836.263981110337!2d72.960175276159!3d21.272706279353514!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04690c756fdc1%3A0x80c6b0af09a75d39!2s7th%20Heaven%20Family%20Dentistry!5e1!3m2!1sen!2sin!4v1771507986082!5m2!1sen!2sin"
-              width="100%"
-              height="400"
-              loading="lazy"
-              className="w-full h-[400px]"
-            ></iframe>
-          </div>
-        </div>
-      </section>
+        <p>
+          🕒 Mon-Sat: 10AM-1PM & 4PM-8PM <br />
+          ❌ Closed Sundays
+        </p>
+
+        <p>📞 +91 72111 77727</p>
+      </div>
+
+      <div className="flex gap-4 pt-4">
+        <a
+          href="https://wa.me/919825130447"
+          target="_blank"
+          className="px-6 py-3 rounded-2xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
+        >
+          WhatsApp
+        </a>
+
+        <a
+          href="/book"
+          className="px-6 py-3 rounded-2xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+        >
+          Book Appointment
+        </a>
+      </div>
+
+      {/* Map */}
+      <div className="rounded-3xl overflow-hidden shadow-lg border border-gray-200 mt-8">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4836.263981110337!2d72.960175276159!3d21.272706279353514!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04690c756fdc1%3A0x80c6b0af09a75d39!2s7th%20Heaven%20Family%20Dentistry!5e1!3m2!1sen!2sin!4v1771507986082!5m2!1sen!2sin"
+          width="100%"
+          height="300"
+          loading="lazy"
+          className="w-full"
+        ></iframe>
+      </div>
+    </div>
+
+    {/* RIGHT SIDE - Contact Form */}
+<div className="bg-gray-50 p-10 rounded-3xl shadow-sm border border-gray-200 relative min-h-[460px]">
+
+
+  {sent ? (
+  <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8">
+    <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-2xl mb-4">
+      🎉
+    </div>
+
+    <h3 className="text-2xl font-serif font-bold text-gray-900">
+      Message Sent Successfully
+    </h3>
+
+    <p className="text-gray-500 mt-2 max-w-sm">
+      Thank you for contacting us. Our team will reach out shortly.
+    </p>
+
+    <button
+      onClick={() => setSent(false)}
+      className="mt-6 px-6 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition"
+    >
+      Send Another Message
+    </button>
+
+    <div className="mt-20">
+<a
+      href="/"
+      className="mt-10 px-6 py-2 rounded-xl bg-gray-300 text-black hover:bg-gray-400 transition"
+    >
+      Back to Home
+    </a>
+    </div>
+  </div>
+) : (
+
+
+    <>
+      <div className="flex items-center gap-3">
+  <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-blue-100 text-blue-600">
+    <Mail size={20} />
+  </div>
+  <h3 className="text-2xl font-serif font-bold bg-gradient-to-r from-black via-gray-600 to-blue-300 animate-gradient bg-clip-text text-transparent">
+    Send Us a Message
+  </h3>
+</div>
+
+
+      <div className="space-y-6">
+
+        {/* Name */}
+        <div className="space-y-2">
+  <label className="text-sm font-medium text-gray-600">
+    Full Name
+  </label>
+  <input
+    type="text"
+    value={form.name}
+    onChange={(e) => setForm({ ...form, name: e.target.value })}
+    className="w-full p-4 border rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition"
+  />
+</div>
+
+
+        {/* Phone */}
+        <div className="space-y-2">
+  <label className="text-sm font-medium text-gray-600">
+    Phone Number
+  </label>
+  <input
+    type="tel"
+    maxLength={10}
+    value={form.phone}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        phone: e.target.value.replace(/\D/g, ""), // removes letters
+      })
+    }
+    className="w-full p-4 border rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition"
+  />
+</div>
+
+
+
+        {/* Message */}
+        <div className="space-y-2">
+  <label className="text-sm font-medium text-gray-600">
+    Your Message
+  </label>
+  <textarea
+    rows={4}
+    value={form.message}
+    onChange={(e) => setForm({ ...form, message: e.target.value })}
+    className="w-full p-4 border rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition"
+  />
+</div>
+
+
+      </div>
+
+      {/* Button */}
+      <button
+  onClick={async () => {
+    if (!form.name.trim()) {
+  alert("Please enter your full name.");
+  return;
+}
+
+if (!/^[6-9]\d{9}$/.test(form.phone)) {
+  alert("Please enter a valid 10-digit phone number.");
+  return;
+}
+
+if (!form.message.trim()) {
+  alert("Please enter your message.");
+  return;
+}
+
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setSent(true);
+      } else {
+        alert("Something went wrong.");
+      }
+    } catch (err) {
+      alert("Server error.");
+    }
+
+    setLoading(false);
+  }}
+  disabled={loading}
+  className={`w-full py-4 rounded-2xl font-semibold transition-all duration-300 ${
+    loading
+      ? "bg-blue-400 cursor-not-allowed"
+      : "bg-blue-600 hover:bg-blue-700 text-white"
+  }`}
+>
+  {loading ? "Sending..." : "Send Message"}
+</button>
+<div className="mt-20">
+<a
+      href="/"
+      className="mt-10 px-6 py-2 rounded-xl bg-gray-300 text-black hover:bg-gray-400 transition"
+    >
+      Back to Home
+    </a>
+    </div>
+
+    </>
+  )}
+
+</div>
+
+  </div>
+</section>
 
       <Footer />
     </main>
