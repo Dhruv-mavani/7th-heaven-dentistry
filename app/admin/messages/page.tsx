@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react"; // Added useRef
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { Trash2, MessageSquare, CheckCircle2, Send, Search, UserCheck } from "lucide-react"; 
 
 type ContactMessage = {
   id: string;
@@ -17,15 +18,17 @@ type ContactMessage = {
 
 export default function MessagesPage() {
   const router = useRouter();
-  const formRef = useRef<HTMLDivElement>(null); // Reference for the form
+  const formRef = useRef<HTMLDivElement>(null);
   
   const [loading, setLoading] = useState(true);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [dbError, setDbError] = useState<string | null>(null);
   const [inquiries, setInquiries] = useState<ContactMessage[]>([]);
 
+  const [searchQuery, setSearchQuery] = useState(""); 
   const [customMessage, setCustomMessage] = useState("");
   const [selectedPatient, setSelectedPatient] = useState("");
+  const [selectedName, setSelectedName] = useState(""); // NEW: Track name separately
   const [selectedChannel, setSelectedChannel] = useState<"sms" | "whatsapp">("whatsapp");
   const [view, setView] = useState<"active" | "resolved">("active");
 
@@ -103,45 +106,97 @@ export default function MessagesPage() {
     }
   }
 
+  async function deleteInquiry(id: string) {
+    if (confirm("Are you sure you want to permanently delete this message?")) {
+      const { error } = await supabase
+        .from("contact_messages")
+        .delete()
+        .eq("id", id);
+
+      if (!error) {
+        showToast("Inquiry deleted.");
+        setInquiries(prev => prev.filter(msg => msg.id !== id));
+      }
+    }
+  }
+
   function showToast(message: string) {
     setToastMessage(message);
     setTimeout(() => setToastMessage(null), 5000);
   }
 
-  function handleSendMessage(e: React.FormEvent) {
-    e.preventDefault();
-    if (!selectedPatient || !customMessage) return;
-    showToast(`Message sent to ${selectedPatient} via ${selectedChannel.toUpperCase()}`);
-    setCustomMessage("");
-    setSelectedPatient("");
+// helper to find the inquiry ID based on the phone/name currently selected
+  const currentInquiryId = inquiries.find(
+    (msg) => msg.phone === selectedPatient || msg.name === selectedName
+  )?.id;
+
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  async function handleSendMessage(e?: React.FormEvent) {
+  if (e) e.preventDefault();
+  
+  if (!selectedPatient || !customMessage) {
+    showToast("⚠️ Missing recipient or message.");
+    return;
   }
+
+  // First time clicking? Show the confirmation modal instead of sending.
+  if (!showConfirm) {
+    setShowConfirm(true);
+    return;
+  }
+
+  // If we reach here, the doctor clicked "Confirm" in the modal
+  const cleaned = selectedPatient.replace(/\D/g, "");
+  const formattedPhone = cleaned.length === 10 ? `91${cleaned}` : cleaned;
+  const encodedMessage = encodeURIComponent(customMessage);
+
+  const inquiryToResolve = inquiries.find(msg => 
+    msg.phone.replace(/\D/g, "") === cleaned
+  );
+
+  // Trigger Redirects
+  if (selectedChannel === "whatsapp") {
+    window.open(`https://wa.me/${formattedPhone}?text=${encodedMessage}`, "_blank");
+  } else {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    window.location.href = `sms:${formattedPhone}${isIOS ? '&' : '?'}body=${encodedMessage}`;
+  }
+
+  // Auto-Resolve in DB
+  if (inquiryToResolve) {
+    await markAsReplied(inquiryToResolve.id);
+  }
+
+  showToast(`Message dispatched to ${selectedName || selectedPatient}`);
+  
+  // Cleanup
+  setCustomMessage("");
+  setSelectedPatient("");
+  setSelectedName("");
+  setShowConfirm(false); // Close modal
+}
 
   function formatDate(dateString: string) {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", { 
-      month: "short", 
-      day: "numeric", 
-      hour: "2-digit", 
-      minute: "2-digit" 
+      month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" 
     });
   }
-
-  if (loading) {
-    return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center">
-        <div className="w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p className="text-blue-800 font-medium">Loading messages...</p>
-      </div>
-    );
-  }
+  
 
   const filteredInquiries = inquiries.filter((msg) => {
-    if (view === "active") return msg.status !== "replied";
-    return msg.status === "replied";
+    const matchesSearch = 
+      msg.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      msg.phone.includes(searchQuery);
+    const matchesView = view === "active" ? msg.status !== "replied" : msg.status === "replied";
+    return matchesSearch && matchesView;
   });
 
+  if (loading) return <div className="min-h-screen flex items-center justify-center font-black text-blue-600 uppercase tracking-widest animate-pulse">Synchronizing Inbox...</div>;
+
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
+    <div className="max-w-7xl mx-auto space-y-8 p-6">
       {toastMessage && (
         <div className="fixed top-10 right-10 z-[9999] animate-in fade-in slide-in-from-top-5 duration-300">
           <div className="bg-white/90 backdrop-blur-xl border border-blue-200 shadow-2xl rounded-2xl p-4 flex items-center gap-3 text-blue-800 font-medium">
@@ -151,129 +206,197 @@ export default function MessagesPage() {
         </div>
       )}
 
-      <header>
-        <h1 className="text-4xl font-serif font-bold text-gray-900 tracking-tight">Patient Inquiries</h1>
-        <p className="text-gray-500 mt-2 text-lg">Manage messages submitted from the website.</p>
+      {/* HEADER */}
+      <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <h1 className="text-4xl font-serif font-bold text-gray-900 tracking-tight">Patient Inquiries</h1>
+          <p className="text-gray-500 mt-2 text-lg italic uppercase text-[10px] font-black tracking-[0.2em] text-blue-600">Message Center</p>
+        </div>
+        
+        <div className="relative w-full md:w-80">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <input 
+            type="text" 
+            placeholder="Search messages..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-12 pr-6 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+          />
+        </div>
       </header>
 
-      <div className="flex gap-4 mt-8">
+      {/* VIEW TOGGLE */}
+      <div className="flex gap-4">
         <button 
           onClick={() => setView("active")}
-          className={`px-6 py-2.5 rounded-2xl font-bold transition-all border ${
+          className={`px-8 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${
             view === "active" 
-            ? "bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-200" 
-            : "bg-white/40 text-gray-500 border-white/60 hover:bg-white/60"
+            ? "bg-slate-900 text-white shadow-lg" 
+            : "bg-white text-slate-400 border border-slate-100 hover:bg-slate-50"
           }`}
         >
-          Active ({inquiries.filter(m => m.status !== 'replied').length})
+          Active Inbox ({inquiries.filter(m => m.status !== 'replied').length})
         </button>
-        
         <button 
           onClick={() => setView("resolved")}
-          className={`px-6 py-2.5 rounded-2xl font-bold transition-all border ${
+          className={`px-8 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${
             view === "resolved" 
-            ? "bg-green-600 text-white border-green-600 shadow-lg shadow-green-200" 
-            : "bg-white/40 text-gray-500 border-white/60 hover:bg-white/60"
+            ? "bg-emerald-600 text-white shadow-lg" 
+            : "bg-white text-slate-400 border border-slate-100 hover:bg-slate-50"
           }`}
         >
           History ({inquiries.filter(m => m.status === 'replied').length})
         </button>
       </div>
 
-      {/* QUICK REPLY FORM (with Ref for scrolling) */}
-      <div ref={formRef} className="bg-white/40 backdrop-blur-2xl border border-white/60 p-8 rounded-3xl shadow-sm scroll-mt-10">
-        <h3 className="text-xl font-bold text-gray-800 mb-6">Quick Reply</h3>
-        <form onSubmit={handleSendMessage} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-1 space-y-5">
+      {/* QUICK REPLY FORM */}
+      <div ref={formRef} className="bg-white border border-slate-200 p-8 rounded-[3rem] shadow-sm">
+        <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+          <MessageSquare className="text-blue-500" size={20} /> 
+          Draft Clinical Reply
+        </h3>
+        <form onSubmit={handleSendMessage} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="space-y-6">
             <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Patient Contact</label>
-              <input 
-                type="text" 
-                placeholder="Name or Phone"
-                value={selectedPatient}
-                onChange={(e) => setSelectedPatient(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-white/60 border border-gray-500 focus:ring-2 focus:ring-blue-500/50 outline-none"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Channel</label>
-              <div className="flex gap-2">
-                <button type="button" onClick={() => setSelectedChannel("whatsapp")} className={`flex-1 py-2 rounded-xl text-sm font-semibold border transition-all ${selectedChannel === "whatsapp" ? "bg-green-100 border-green-300 text-green-700" : "bg-white/40 text-gray-500"}`}>WhatsApp</button>
-                <button type="button" onClick={() => setSelectedChannel("sms")} className={`flex-1 py-2 rounded-xl text-sm font-semibold border transition-all ${selectedChannel === "sms" ? "bg-blue-100 border-blue-300 text-blue-700" : "bg-white/40 text-gray-500"}`}>SMS</button>
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Recipient Contact</label>
+              <div className="space-y-3">
+                <input 
+                  type="text" 
+                  placeholder="Name or Phone"
+                  value={selectedPatient}
+                  onChange={(e) => setSelectedPatient(e.target.value)}
+                  className="w-full px-5 py-4 rounded-2xl bg-slate-50 border-none ring-1 ring-slate-100 focus:ring-2 focus:ring-blue-500 outline-none font-bold text-slate-700 transition-all"
+                />
+                
+                {/* VERIFICATION BADGE */}
+                {selectedName && (
+                  <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-xl border border-blue-100 animate-in fade-in zoom-in duration-300">
+                    <UserCheck size={14} className="text-blue-600" />
+                    <span className="text-[10px] font-black text-blue-600 uppercase tracking-tight">
+                      Confirmed: <span className="text-slate-900 ml-1">{selectedName}</span>
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
-            <button type="submit" className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all">Send Reply</button>
+            
+            <div>
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Outbound Channel</label>
+              <div className="flex p-1 bg-slate-100 rounded-xl">
+                <button type="button" onClick={() => setSelectedChannel("whatsapp")} className={`flex-1 py-3 rounded-lg text-[10px] font-black uppercase transition-all ${selectedChannel === "whatsapp" ? "bg-white text-emerald-600 shadow-sm" : "text-slate-400"}`}>WhatsApp</button>
+                <button type="button" onClick={() => setSelectedChannel("sms")} className={`flex-1 py-3 rounded-lg text-[10px] font-black uppercase transition-all ${selectedChannel === "sms" ? "bg-white text-blue-600 shadow-sm" : "text-slate-400"}`}>SMS</button>
+              </div>
+            </div>
+            <button type="submit" className="w-full py-4 bg-blue-600 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-slate-900 transition-all shadow-xl shadow-blue-100 flex items-center justify-center gap-3">
+              <Send size={16} /> Dispatch
+            </button>
           </div>
           <div className="md:col-span-2 flex flex-col">
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-2">Message Content</label>
+            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Message Content</label>
             <textarea 
-              placeholder="Type your reply..."
+              placeholder="Start typing your response..."
               value={customMessage}
               onChange={(e) => setCustomMessage(e.target.value)}
-              className="flex-1 w-full px-5 py-4 rounded-xl bg-white/60 border border-gray-500 focus:ring-2 focus:ring-blue-500/50 outline-none resize-none min-h-[150px]"
+              className="flex-1 w-full px-6 py-5 rounded-[2rem] bg-slate-50 border-none ring-1 ring-slate-100 focus:ring-2 focus:ring-blue-500 outline-none resize-none min-h-[180px] font-medium text-slate-700 transition-all leading-relaxed"
             />
           </div>
         </form>
       </div>
 
-      <div className="rounded-3xl bg-white/40 backdrop-blur-2xl border border-white/60 shadow-sm overflow-hidden">
-        <div className="px-8 py-6 border-b border-white/50 bg-white/20">
-          <h3 className="text-xl font-bold text-gray-800">Recent Messages</h3>
-        </div>
-        
+      {/* TABLE SECTION */}
+      <div className="bg-white border border-slate-200 rounded-[3rem] shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-white/30 text-gray-500 text-xs uppercase tracking-widest font-semibold">
-              <tr>
-                <th className="p-6">Patient</th>
-                <th className="p-6 w-1/2">Message</th>
-                <th className="p-6 text-right">Actions</th>
+            <thead>
+              <tr className="bg-slate-50/50 text-slate-400 text-[10px] uppercase tracking-[0.2em] font-black border-b border-slate-100">
+                <th className="p-10">Patient Information</th>
+                <th className="p-10 w-1/2">Inquiry Details</th>
+                <th className="p-10 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/40">
-              {dbError && (
-                <tr><td colSpan={3} className="p-12 text-center text-red-500 font-bold">{dbError}</td></tr>
-              )}
+            <tbody className="divide-y divide-slate-50">
               {filteredInquiries.map((inquiry) => (
-                <tr key={inquiry.id} className="hover:bg-white/40 transition-all">
-                  <td className="p-6">
-                    <div className="font-bold text-gray-900">{inquiry.name}</div>
-                    <div className="text-sm text-gray-500">{inquiry.phone}</div>
-                    <div className="text-xs text-gray-400 mt-1">{formatDate(inquiry.created_at)}</div>
+                <tr key={inquiry.id} className="hover:bg-slate-50/30 transition-all group">
+                  <td className="p-10 align-top">
+                    <div className="font-bold text-slate-900 text-lg leading-tight">{inquiry.name}</div>
+                    <div className="text-sm text-slate-500 mt-1">{inquiry.phone}</div>
+                    <div className="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-black rounded-lg uppercase mt-4 tracking-wider">
+                      {formatDate(inquiry.created_at)}
+                    </div>
                   </td>
-                  <td className="p-6">
-                    <p className="text-gray-800 text-sm whitespace-pre-wrap">{inquiry.message}</p>
+                  <td className="p-10 align-top">
+                    <p className="text-slate-700 text-sm whitespace-pre-wrap leading-relaxed italic border-l-4 border-slate-100 pl-6 py-2">
+                      "{inquiry.message}"
+                    </p>
                     {inquiry.status && (
-                      <span className={`mt-2 inline-block px-3 py-1 rounded-full text-[10px] font-bold border ${
-                        inquiry.status === "replied" ? "bg-green-100 border-green-200 text-green-700" : "bg-yellow-100 border-yellow-200 text-yellow-700"
-                      }`}>{inquiry.status.toUpperCase()}</span>
+                      <div className={`mt-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${
+                        inquiry.status === "replied" ? "bg-emerald-50 text-emerald-600" : "bg-amber-50 text-amber-600"
+                      }`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${inquiry.status === "replied" ? "bg-emerald-500" : "bg-amber-500"}`} />
+                        {inquiry.status}
+                      </div>
                     )}
                   </td>
-                  <td className="p-6 text-right align-top space-y-2">
+                  <td className="p-10 text-right align-top space-y-3">
                     <button 
                       onClick={() => { 
-                        setSelectedPatient(inquiry.phone || inquiry.name); 
-                        // Scoll to form smoothly
+                        setSelectedPatient(inquiry.phone); 
+                        setSelectedName(inquiry.name); // Set name for verification
                         formRef.current?.scrollIntoView({ behavior: 'smooth' });
                       }}
-                      className="block w-full px-4 py-2 bg-white/60 border border-blue-200 text-blue-700 text-sm font-semibold rounded-xl"
-                    >Reply</button>
+                      className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-900 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all shadow-sm"
+                    >
+                      <MessageSquare size={14} /> Reply
+                    </button>
                     {inquiry.status !== "replied" && (
                       <button 
                         onClick={() => markAsReplied(inquiry.id)}
-                        className="block w-full px-4 py-2 bg-white/60 border border-green-200 text-green-700 text-sm font-semibold rounded-xl"
-                      >Mark Resolved</button>
+                        className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-emerald-600 hover:text-white transition-all shadow-sm"
+                      >
+                        <CheckCircle2 size={14} /> Resolve
+                      </button>
                     )}
+                    <button 
+                      onClick={() => deleteInquiry(inquiry.id)}
+                      className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-rose-50 text-rose-600 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-rose-600 hover:text-white transition-all shadow-sm"
+                    >
+                      <Trash2 size={14} /> Delete
+                    </button>
                   </td>
                 </tr>
               ))}
-              {!dbError && inquiries.length === 0 && (
-                <tr><td colSpan={3} className="p-12 text-center text-gray-500">No messages found.</td></tr>
-              )}
             </tbody>
           </table>
         </div>
       </div>
+      {showConfirm && (
+  <div className="fixed inset-0 z-[10000] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="bg-white rounded-[2.5rem] p-10 max-w-md w-full shadow-2xl border border-slate-100">
+      <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6">
+        <Send size={32} />
+      </div>
+      <h3 className="text-2xl font-bold text-slate-900 mb-2">Ready to Dispatch?</h3>
+      <p className="text-slate-500 mb-8 leading-relaxed">
+        This will open <span className="font-bold text-slate-900">{selectedChannel.toUpperCase()}</span> and move this inquiry to your history.
+      </p>
+      <div className="flex gap-4">
+        <button 
+          type="button"
+          onClick={() => setShowConfirm(false)}
+          className="flex-1 py-4 bg-slate-100 text-slate-600 text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-slate-200 transition-all"
+        >
+          Wait, Edit
+        </button>
+        <button 
+          onClick={() => handleSendMessage()}
+          className="flex-1 py-4 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-slate-900 shadow-xl shadow-blue-200 transition-all"
+        >
+          Yes, Send
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }

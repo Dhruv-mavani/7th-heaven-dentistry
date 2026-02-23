@@ -133,7 +133,7 @@ export default function PatientModal({
             <div className="space-y-1.5">
               <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Gender</label>
               <select 
-                value={formData.gender}
+                value={formData.gender|| ""}
                 className="w-full p-4 rounded-2xl bg-gray-50 border border-transparent focus:border-blue-500 focus:bg-white outline-none appearance-none font-medium transition-all"
                 onChange={e => setFormData({...formData, gender: e.target.value})}
               >

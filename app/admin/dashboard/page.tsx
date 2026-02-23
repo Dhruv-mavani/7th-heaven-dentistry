@@ -3,9 +3,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
-import { Search, Users, Calendar as CalendarIcon, Clock, CheckCircle, XCircle } from "lucide-react";
+import { Search, Users, Calendar as CalendarIcon, Clock, CheckCircle, Trash2 } from "lucide-react";
 
 type Appointment = {
   id: number;
@@ -18,20 +17,15 @@ type Appointment = {
   status: string;
 };
 
-type FilterType = "all" | "pending" | "confirmed" | "rescheduled" | "rejected";
+type FilterType = "all" | "pending" | "confirmed" | "rejected";
 
 export default function Dashboard() {
   const router = useRouter();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [searchQuery, setSearchQuery] = useState(""); // Search state
+  const [searchQuery, setSearchQuery] = useState(""); 
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<FilterType>("all");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingAppt, setEditingAppt] = useState<Appointment | null>(null);
-  const [newDate, setNewDate] = useState("");
-  const [newTime, setNewTime] = useState("");
 
   useEffect(() => {
     checkUser();
@@ -95,21 +89,22 @@ export default function Dashboard() {
     }
   }
 
-  async function handleRescheduleSave() {
-    if (!editingAppt) return;
-    await supabase.from("appointments").update({
-      date: newDate,
-      appointment_date: newDate,
-      time: newTime,
-      status: "rescheduled",
-    }).eq("id", editingAppt.id);
+  async function deleteAppointment(id: number, name: string) {
+    if (confirm(`Are you sure you want to permanently delete the lead for ${name}?`)) {
+      const { error } = await supabase
+        .from("appointments")
+        .delete()
+        .eq("id", id);
 
-    showToast(`Rescheduled visit for ${editingAppt.name}.`);
-    setIsModalOpen(false);
-    fetchAppointments(); 
+      if (!error) {
+        showToast(`Record for ${name} has been removed.`);
+        setAppointments(prev => prev.filter(a => a.id !== id));
+      } else {
+        alert("Delete failed: " + error.message);
+      }
+    }
   }
 
-  // --- Search & Filter Logic ---
   const filteredAppointments = appointments.filter((appt) => {
     const matchesSearch = 
       appt.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -126,7 +121,7 @@ export default function Dashboard() {
     today: appointments.filter(a => (a.appointment_date || a.date) === new Date().toISOString().split("T")[0]).length
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-blue-50">Loading Dashboard...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-blue-50 font-black text-blue-600 uppercase tracking-widest">Loading Dashboard...</div>;
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20">
@@ -139,20 +134,18 @@ export default function Dashboard() {
 
       <main className="max-w-7xl mx-auto px-6 pt-12 space-y-8">
         
-        {/* Header Area */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <h1 className="text-4xl font-serif font-bold tracking-tight">Clinic Intake</h1>
-            <p className="text-slate-500 font-medium">Manage incoming leads and clinical conversions.</p>
+            <h1 className="text-4xl font-serif font-bold tracking-tight bg-gradient-to-r from-black via-gray-600 to-blue-300 animate-gradient bg-clip-text text-transparent">Welcome, Dr. Kartik</h1>
+            <p className="text-slate-500 font-medium italic">Monitor incoming leads and Old Records.</p>
           </div>
           <div className="flex gap-3">
-            <Link href="/admin/patients" className="flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 text-xs font-black uppercase tracking-widest rounded-2xl hover:bg-slate-50 transition-all">
-              <Users size={14} /> Directory
+            <Link href="/admin/patients" className="flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 text-xs font-black uppercase tracking-widest rounded-2xl hover:bg-slate-50 transition-all shadow-sm">
+              <Users size={14} /> Patient Directory
             </Link>
           </div>
         </div>
 
-        {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard title="Total Leads" value={appointments.length} icon={<Users size={16}/>} />
           <StatCard title="Today" value={stats.today} color="text-blue-600" icon={<CalendarIcon size={16}/>} />
@@ -160,13 +153,9 @@ export default function Dashboard() {
           <StatCard title="Confirmed" value={stats.confirmed} color="text-emerald-600" icon={<CheckCircle size={16}/>} />
         </div>
 
-        {/* Search and Table Container */}
         <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-200 overflow-hidden">
           
-          {/* Action Bar */}
           <div className="p-6 md:p-8 border-b border-slate-100 flex flex-col lg:flex-row gap-6 justify-between items-center">
-            
-            {/* Search Input */}
             <div className="relative w-full lg:max-w-md">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
               <input 
@@ -178,9 +167,8 @@ export default function Dashboard() {
               />
             </div>
 
-            {/* Status Filter Tabs */}
             <div className="flex p-1 bg-slate-100 rounded-2xl overflow-x-auto max-w-full">
-              {["all", "pending", "confirmed", "rescheduled", "rejected"].map((f) => (
+              {["all", "pending", "confirmed", "rejected"].map((f) => (
                 <button
                   key={f}
                   onClick={() => setFilter(f as any)}
@@ -192,7 +180,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Table */}
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
@@ -207,9 +194,11 @@ export default function Dashboard() {
               <tbody className="divide-y divide-slate-50">
                 {filteredAppointments.length > 0 ? (
                   filteredAppointments.map((appt) => (
-                    <tr key={appt.id} className="hover:bg-slate-50/50 transition-colors">
+                    <tr key={appt.id} className="hover:bg-slate-50/50 transition-colors group">
                       <td className="px-8 py-6">
-                        <div className="font-bold text-slate-900">{appt.name}</div>
+                        <Link href={`/admin/patients/${appt.id}`} className="hover:underline">
+                          <div className="font-bold text-slate-900">{appt.name}</div>
+                        </Link>
                         <div className="text-xs text-slate-400 font-medium">{appt.phone}</div>
                       </td>
                       <td className="px-8 py-6">
@@ -234,14 +223,21 @@ export default function Dashboard() {
                           {appt.status}
                         </div>
                       </td>
-                      <td className="px-8 py-6 flex justify-end gap-2">
-                        {appt.status === 'pending' && (
-                          <button onClick={() => updateStatus(appt, "confirmed")} className="px-4 py-2 bg-emerald-600 text-white text-[10px] font-black uppercase rounded-xl hover:bg-emerald-700 transition-all">Accept</button>
-                        )}
-                        <button onClick={() => { setEditingAppt(appt); setNewDate(appt.appointment_date || appt.date); setNewTime(appt.time); setIsModalOpen(true); }} className="px-4 py-2 bg-white border border-slate-200 text-[10px] font-black uppercase rounded-xl hover:bg-slate-50 transition-all">Reschedule</button>
-                        {appt.status !== 'rejected' && (
-                          <button onClick={() => updateStatus(appt, "rejected")} className="px-4 py-2 text-rose-600 text-[10px] font-black uppercase rounded-xl hover:bg-rose-50 transition-all">Reject</button>
-                        )}
+                      <td className="px-8 py-6">
+                        <div className="flex justify-end gap-2">
+                          
+                          {/* RECIPROCAL LOGIC: Accept button shows for Pending and Rejected */}
+                          {(appt.status === 'pending' || appt.status === 'rejected') && (
+                            <button onClick={() => updateStatus(appt, "confirmed")} className="px-4 py-2 bg-emerald-600 text-white text-[10px] font-black uppercase rounded-xl hover:bg-emerald-700 transition-all">Accept</button>
+                          )}
+                          
+                          
+
+                          {/* RECIPROCAL LOGIC: Reject button shows for Pending and Confirmed */}
+                          {(appt.status === 'pending' || appt.status === 'confirmed') && (
+                            <button onClick={() => updateStatus(appt, "rejected")} className="px-4 py-2 text-rose-600 text-[10px] font-black uppercase rounded-xl hover:bg-rose-50 transition-all">Reject</button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -257,30 +253,13 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
-
-      {/* Reschedule Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm">
-          <div className="bg-white p-10 rounded-[3rem] shadow-2xl w-full max-w-md animate-in zoom-in-95 duration-200">
-            <h3 className="text-2xl font-serif font-bold text-slate-900 mb-6">Modify Schedule</h3>
-            <div className="space-y-4">
-              <input type="date" value={newDate} onChange={(e) => setNewDate(e.target.value)} className="w-full p-4 bg-slate-50 border-none rounded-2xl ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-500 transition-all font-bold" />
-              <input type="time" value={newTime} onChange={(e) => setNewTime(e.target.value)} className="w-full p-4 bg-slate-50 border-none rounded-2xl ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-500 transition-all font-bold" />
-            </div>
-            <div className="flex gap-3 mt-10">
-              <button onClick={() => setIsModalOpen(false)} className="flex-1 p-4 bg-slate-100 text-slate-500 text-[10px] font-black uppercase rounded-2xl">Cancel</button>
-              <button onClick={handleRescheduleSave} className="flex-1 p-4 bg-blue-600 text-white text-[10px] font-black uppercase rounded-2xl shadow-lg shadow-blue-200">Save Changes</button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
 
 function StatCard({ title, value, color, icon }: { title: string; value: number; color?: string; icon: React.ReactNode }) {
   return (
-    <div className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm flex items-center gap-4">
+    <div className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm flex items-center gap-4 hover:shadow-md transition-all">
       <div className={`w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400`}>
         {icon}
       </div>
