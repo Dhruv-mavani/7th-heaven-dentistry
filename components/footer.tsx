@@ -58,6 +58,11 @@ export default function Footer() {
             Contact
           </a>
         </li>
+        <li>
+          <a href="/admin/login" className="hover:text-white transition">
+            Doctor Login
+          </a>
+        </li>
       </ul>
     </div>
 

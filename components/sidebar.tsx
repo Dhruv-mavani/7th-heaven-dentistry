@@ -135,6 +135,13 @@ export default function Sidebar() {
               <Calendar size={20} />
               Calendar
             </Link>
+
+            <Link href="/admin/payments" className={`px-5 py-3 rounded-2xl flex items-center gap-3 transition-all ${
+              pathname === '/admin/payments' ? "bg-white/60 shadow-sm text-blue-700 font-bold" : "text-gray-500 hover:text-blue-600"
+            }`}>
+              <Calendar size={20} />
+              Payments
+            </Link>
           </nav>
 
           <div className="mt-8">

@@ -5,56 +5,55 @@ import Link from "next/link";
 const services = [
   {
     title: "Dental Fillings",
-    desc: "Repair cavities with natural-looking fillings that blend perfectly with your teeth.",
+    desc: "Restore teeth with bio-compatible, mercury-free composite resins. Our advanced shade-matching ensures a durable, 'invisible' finish that mimics natural enamel translucency.",
     icon: "/images/dentalfilling.png",
   },
   {
     title: "Root Canal Treatment",
-    desc: "Save infected teeth with painless and advanced root canal procedures.",
+    desc: "Preserve your natural teeth through precise, pain-free endodontic therapy. We remove infection and seal the canal to restore function and prevent future complications.",
     icon: "/images/rootcanal.png",
   },
   {
     title: "Braces & Aligners",
-    desc: "Straighten your smile with modern orthodontic solutions.",
+    desc: "Achieve perfect dental alignment using modern orthodontic technology. From traditional braces to clear aligners, we design custom plans for a healthier, straighter smile.",
     icon: "/images/braces.png",
   },
   {
     title: "Dental Implants",
-    desc: "Permanent replacement for missing teeth with long-lasting implants.",
+    desc: "The gold standard for missing teeth. Our surgical-grade titanium implants provide a permanent, root-like foundation for crowns that look and function like natural teeth.",
     icon: "/images/dentalimplant.png",
   },
   {
     title: "Teeth Whitening",
-    desc: "Brighten your smile with professional whitening treatments.",
+    desc: "Brighten your smile safely with professional-grade whitening. Our advanced clinical formulas remove deep stains and discoloration for an instantly radiant result.",
     icon: "/images/teethwhitening.png",
   },
   {
     title: "Pediatric Dentistry",
-    desc: "Gentle and friendly dental care for children of all ages.",
+    desc: "Specialized, compassionate care designed for younger smiles. We focus on preventive treatments and positive experiences to build a lifetime of good oral health habits.",
     icon: "/images/pediatricdentistry.png",
   },
   {
     title: "Dentures",
-    desc: "Keep the right type of denture for you.",
+    desc: "Custom-crafted prosthetic solutions to restore your smile and chewing ability. We offer high-precision partial and full dentures designed for comfort and a natural fit.",
     icon: "/images/dentures.png",
   },
   {
     title: "Cosmetic Dentistry",
-    desc: "Time to flaunt that smile.",
+    desc: "Enhance your smile's aesthetics with veneers, bonding, and contouring. We combine art and science to create the perfect smile you've always wanted to flaunt.",
     icon: "/images/cosmeticdentistry.png",
   },
   {
     title: "Cosmetic Surgery",
-    desc: "Discover the transformative potential of cosmetic surgery and unlock the true you, both inside and out.",
+    desc: "Transformative facial and oral procedures designed to harmonize your features. Unlock your confidence with surgical expertise tailored to your unique anatomy.",
     icon: "/images/cosmeticsurgery.png",
   },
   {
     title: "Jaw Surgery",
-    desc: "Learn how this specialized surgical procedure can enhance your health, appearance, and overall well-being.",
+    desc: "Correct structural irregularities to improve breathing, chewing, and facial symmetry. A specialized procedure focused on enhancing both health and appearance.",
     icon: "/images/jawsurgery.png",
   },
 ];
-
 export default function ServicesPage() {
   return (
     <main>

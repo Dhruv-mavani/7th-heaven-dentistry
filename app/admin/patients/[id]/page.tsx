@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+
 export default function PatientProfile({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const patientId = resolvedParams.id;
@@ -29,6 +30,7 @@ export default function PatientProfile({ params }: { params: Promise<{ id: strin
   const [editingEventId, setEditingEventId] = useState<number | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [editDetails, setEditDetails] = useState("");
+  const [nextAmount, setNextAmount] = useState("");
 
   useEffect(() => {
     async function getFullProfile() {
@@ -81,17 +83,20 @@ export default function PatientProfile({ params }: { params: Promise<{ id: strin
     setSavingNotes(false);
   };
 
-  const handleAddNextVisit = async () => {
-    if (!nextVisitDate || !patient) return;
-    const { error } = await supabase.from("appointments").insert([{ 
-      name: patient.name, 
-      phone: patient.phone,
-      date: nextVisitDate,
-      time: nextVisitTime,
-      service: nextService,
-      notes: nextServiceNotes,
-      status: 'confirmed' 
-    }]);
+  // Update handleAddNextVisit
+const handleAddNextVisit = async () => {
+  if (!nextVisitDate || !patient) return;
+  const { error } = await supabase.from("appointments").insert([{ 
+    name: patient.name, 
+    phone: patient.phone,
+    date: nextVisitDate,
+    time: nextVisitTime,
+    service: nextService,
+    notes: nextServiceNotes,
+    amount_due: parseFloat(nextAmount) || 0, // Store the fee
+    payment_status: 'pending', 
+    status: 'confirmed' 
+  }]);
     if (!error) window.location.reload();
     else alert("Error: " + error.message);
   };
@@ -272,6 +277,19 @@ export default function PatientProfile({ params }: { params: Promise<{ id: strin
                             <p className="text-[10px] font-bold text-blue-500 uppercase">{event.time}</p>
                           </div>
                         </div>
+
+                        <div className="flex items-center gap-2 mt-1">
+  <span className={`text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter ${
+    event.payment_status === 'paid' 
+      ? 'bg-emerald-100 text-emerald-700' 
+      : 'bg-rose-100 text-rose-700 animate-pulse'
+  }`}>
+    {event.payment_status || 'pending'}
+  </span>
+  <span className="text-[10px] font-bold text-slate-500">
+    ₹{event.amount_due || 0}
+  </span>
+</div>
 
                         <div className="mt-4">
                           {editingEventId === event.id ? (
