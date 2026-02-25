@@ -196,7 +196,7 @@ export default function Dashboard() {
                   filteredAppointments.map((appt) => (
                     <tr key={appt.id} className="hover:bg-slate-50/50 transition-colors group">
                       <td className="px-8 py-6">
-                        <Link href={`/admin/patients/${appt.id}`} className="hover:underline">
+                        <Link href={`/admin/patients`} className="hover:underline">
                           <div className="font-bold text-slate-900">{appt.name}</div>
                         </Link>
                         <div className="text-xs text-slate-400 font-medium">{appt.phone}</div>

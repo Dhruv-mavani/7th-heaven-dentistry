@@ -2,7 +2,7 @@ import "./globals.css";
 import { Inter, Playfair_Display } from "next/font/google";
 
 export const metadata = {
-  title: "7th Heaven Family Dentistry | Surat",
+  title: "Smile Guru",
   description: "Premium dental care and appointments in Surat.",
   icons: {
     icon: "/images/logo.png",

@@ -28,7 +28,7 @@ export default function BookPage() {
 
   {/* Premium Tagline */}
   <p className="uppercase tracking-[0.4em] text-xs font-semibold text-blue-200">
-    7th Heaven Family Dentistry • Surat
+    Smile Guru Dentistry • Surat
   </p>
 
   {/* Main Heading */}

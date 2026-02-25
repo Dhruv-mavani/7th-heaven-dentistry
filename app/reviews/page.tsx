@@ -14,6 +14,18 @@ const reviews = [
     name: "Sneha Patel",
     text: "I was nervous at first, but the doctor made me feel comfortable. Amazing service!",
   },
+  {
+    name: "Aesha Patel",
+    text: "Once during my social visit to surat in emergency I consult doctor for my tooth pain and his promt action helped me to relieve my tooth pain. Very good doctor.",
+  },
+  {
+    name: "Nikil Patel",
+    text: "Very good dentist doctor service in surat. I am fully satisfied by the treatment provided by doctor. I recommend smile guru clinic in vesu, Surat.",
+  },
+  {
+    name: "Uma Kamejariya",
+    text: "I visited clinic for braces for my sister. Overall very good experience. Ambience of clinic is very nice. Highly recommended for braces.",
+  },
 ];
 
 export default function ReviewsPage() {
@@ -72,7 +84,7 @@ export default function ReviewsPage() {
         {/* Google Reviews Button */}
         <div className="text-center mt-16">
       <a
-        href="https://www.google.com/maps/place/7th+Heaven+Family+Dentistry/@21.2727063,72.9601753,835m/data=!3m1!1e3!4m8!3m7!1s0x3be04690c756fdc1:0x80c6b0af09a75d39!8m2!3d21.2727013!4d72.9627502!9m1!1b1!16s%2Fg%2F11hcbtjdz1?entry=ttu&g_ep=EgoyMDI2MDIxNi4wIKXMDSoASAFQAw%3D%3D.google.com/maps"
+        href="https://www.google.com/maps/place/Smile+Guru/@21.1458467,72.7849993,976m/data=!3m1!1e3!4m8!3m7!1s0x3be0533d348df059:0x2446751d1258df52!8m2!3d21.1458321!4d72.7878034!9m1!1b1!16s%2Fg%2F11s42q95qw?entry=ttu&g_ep=EgoyMDI2MDIyMi4wIKXMDSoASAFQAw%3D%3D"
         target="_blank"
         className="inline-block px-10 py-4 rounded-2xl bg-gray-100 border border-gray-200 text-gray-900 font-semibold text-lg shadow-sm hover:shadow-md hover:bg-gray-200 transition"
       >

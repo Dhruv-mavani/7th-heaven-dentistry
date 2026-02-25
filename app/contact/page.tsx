@@ -47,16 +47,16 @@ export default function ContactPage() {
     <MapPin size={20} />
   </div>
   <h2 className="text-3xl font-serif font-bold bg-gradient-to-r from-black via-gray-600 to-blue-300 animate-gradient bg-clip-text text-transparent">
-    Visit 7th Heaven Dentistry
+    Visit Smile Guru  Dentistry
   </h2>
 </div>
 
 
       <div className="space-y-4 text-gray-600 leading-relaxed">
-        <p>📍 Bhagvati Society, Kamrej 394185, Surat</p>
+        <p>📍 303/304 pramukh orbit 2 opposit L P savani academy, Vesu Canal Rd, near Cellestial Dreams, Surat, Gujarat 395007</p>
 
         <p>
-          🕒 Mon-Sat: 10AM-1PM & 4PM-8PM <br />
+          🕒 Mon-Sat: 10AM-1PM (Vesu) & 4PM-8PM (Kamrej)<br />
           ❌ Closed Sundays
         </p>
 
@@ -83,7 +83,7 @@ export default function ContactPage() {
       {/* Map */}
       <div className="rounded-3xl overflow-hidden shadow-lg border border-gray-200 mt-8">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4836.263981110337!2d72.960175276159!3d21.272706279353514!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04690c756fdc1%3A0x80c6b0af09a75d39!2s7th%20Heaven%20Family%20Dentistry!5e1!3m2!1sen!2sin!4v1771507986082!5m2!1sen!2sin"
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d4249.850481570892!2d72.78499927379372!3d21.145846742665977!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be0533d348df059%3A0x2446751d1258df52!2sSmile%20Guru!5e1!3m2!1sen!2sin!4v1771996766752!5m2!1sen!2sin"
           width="100%"
           height="300"
           loading="lazy"

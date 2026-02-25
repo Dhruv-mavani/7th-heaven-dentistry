@@ -10,11 +10,11 @@ export default function Footer() {
       <div className="flex items-center gap-3">
         <img
           src="/images/logo.png"
-          alt="7th Heaven Logo"
+          alt="Smile Guru Logo"
           className="w-12 h-11 object-contain scale-300"
         />
         <h3 className="text-white font-serif font-bold text-2xl">
-          7th Heaven Dentistry
+          Smile Guru Dentistry
         </h3>
       </div>
 
@@ -74,7 +74,7 @@ export default function Footer() {
 
       <p className="text-sm text-gray-400 leading-relaxed">
         📍 Surat, Gujarat, India <br />
-        🕒 Mon-Sat: 10AM-1PM & 4PM-8PM <br />
+        🕒 Mon-Sat: 10AM-1PM (Vesu) & 4PM-8PM (Kamrej)<br />
         ❌ Closed Sundays
       </p>
 
@@ -90,7 +90,7 @@ export default function Footer() {
 
   {/* Bottom Bar */}
   <div className="border-t border-white/10 mt-16 pt-6 text-center text-sm text-gray-500">
-    © {new Date().getFullYear()} 7th Heaven Family Dentistry. All rights reserved.
+    © {new Date().getFullYear()} Smile Guru Dentistry. All rights reserved.
   </div>
 </footer>
   );

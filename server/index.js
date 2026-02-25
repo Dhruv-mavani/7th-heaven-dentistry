@@ -68,6 +68,20 @@ app.post("/api/appointments", async (req, res) => {
   }
 });
 
+// In your server index.js
+app.patch('/api/appointments/:id', async (req, res) => {
+  const { id } = req.params;
+  const { is_completed } = req.body;
+
+  const { data, error } = await supabase
+    .from('appointments')
+    .update({ is_completed })
+    .eq('id', id);
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ message: "Status updated", data });
+});
+
 
 
 app.listen(5000, () =>

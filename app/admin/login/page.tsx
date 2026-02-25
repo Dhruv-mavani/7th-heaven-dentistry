@@ -61,7 +61,7 @@ export default function AdminLoginPage() {
                 <ShieldCheck size={40} className="text-white" />
               </div>
               <h1 className="text-3xl font-serif font-bold text-gray-900">Admin Portal</h1>
-              <p className="text-gray-500 mt-2 text-center">7th Heaven Dental Clinic Management</p>
+              <p className="text-gray-500 mt-2 text-center">Smile Guru Clinic Management</p>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-5">

@@ -88,7 +88,7 @@ export default function Sidebar() {
               />
             </div>
             <div className="ml-16">
-              <h2 className="text-xl font-serif font-bold text-gray-900 leading-tight">7th Heaven</h2>
+              <h2 className="text-xl font-serif font-bold text-gray-900 leading-tight">Smile Guru</h2>
               <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-blue-600/60">Dental Clinic</p>
             </div>
           </div>

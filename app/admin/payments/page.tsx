@@ -103,7 +103,7 @@ export default function GlobalPayments() {
         <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden group">
           <TrendingUp className="absolute right-[-10px] top-[-10px] text-white/5 w-32 h-32 rotate-12 group-hover:rotate-0 transition-transform" />
           <div className="text-blue-400 font-black text-[10px] uppercase tracking-widest mb-2 flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" /> Total Collection
+            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" /> Today's Total Collection
           </div>
           <h2 className="text-5xl font-serif font-bold">₹{todayRevenue.toLocaleString()}</h2>
           <button onClick={exportGlobalCSV} className="mt-4 flex items-center gap-2 text-[9px] font-black uppercase tracking-widest bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-all border border-white/10">
@@ -114,7 +114,7 @@ export default function GlobalPayments() {
         {/* Total Remaining Card */}
         <div className="bg-white rounded-[2.5rem] p-8 border border-slate-200 shadow-sm relative overflow-hidden">
            <div className="text-rose-500 font-black text-[10px] uppercase tracking-widest mb-2 flex items-center gap-2">
-            <AlertCircle size={14} /> Total Outstanding
+            <AlertCircle size={14} /> Lifetime Total Outstanding
           </div>
           <h2 className="text-4xl font-bold text-slate-900">
             ₹{ledgers.reduce((acc, curr) => acc + curr.balance, 0).toLocaleString()}
