@@ -236,7 +236,9 @@ export default function AppointmentForm() {
                 time: "", // ✅ Reset time when date changes
               })
             }
-            className="w-full p-5 border rounded-2xl text-lg"
+            className="w-full p-5 border rounded-2xl text-lg 
+           text-gray-900 placeholder:text-gray-500
+           focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           {/* ❌ Sunday Warning */}
@@ -342,7 +344,9 @@ export default function AppointmentForm() {
             onChange={(e) =>
               setForm({ ...form, name: e.target.value })
             }
-            className="w-full p-5 border rounded-2xl"
+            className="w-full p-5 border rounded-2xl
+           text-gray-900 placeholder:text-gray-500
+           focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           <input
@@ -353,7 +357,9 @@ export default function AppointmentForm() {
   onChange={(e) =>
     setForm({ ...form, phone: e.target.value.replace(/\D/g, "") })
   }
-  className="w-full p-5 border rounded-2xl"
+  className="w-full p-5 border rounded-2xl
+           text-gray-900 placeholder:text-gray-500
+           focus:outline-none focus:ring-2 focus:ring-blue-500"
 />
 
 
