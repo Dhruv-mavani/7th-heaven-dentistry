@@ -41,9 +41,18 @@ export default function Dashboard() {
   }, [loading]);
 
   async function checkUser() {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) router.push("/admin/login");
+  const { data } = await supabase.auth.getSession();
+
+  if (!data.session) {
+    router.push("/admin/login");
+    return;
   }
+
+  // Block recovery sessions
+  if (data.session.user?.recovery_sent_at) {
+    router.push("/admin/login");
+  }
+}
 
   async function fetchAppointments() {
     const { data } = await supabase
@@ -124,7 +133,7 @@ export default function Dashboard() {
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-blue-50 font-black text-blue-600 uppercase tracking-widest">Loading Dashboard...</div>;
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20">
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20 overflow-x-auto">
       
       {toastMessage && (
         <div className="fixed top-8 right-8 z-[100] animate-in slide-in-from-right-5 fade-in bg-white border-l-4 border-blue-600 shadow-2xl rounded-xl p-4 font-bold">
@@ -132,7 +141,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      <main className="max-w-7xl mx-auto px-6 pt-12 space-y-8">
+      <main className="min-w-[1100px] max-w-7xl mx-auto px-6 pt-12 space-y-8">
         
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>

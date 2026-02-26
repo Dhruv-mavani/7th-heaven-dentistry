@@ -25,7 +25,8 @@ export default function ResetPasswordPage() {
       setLoading(false);
     } else {
       setSuccess(true);
-      setTimeout(() => router.push("/admin/login"), 3000);
+      await supabase.auth.signOut();
+      setTimeout(() => router.push("/admin/login"), 2000);
     }
   };
 

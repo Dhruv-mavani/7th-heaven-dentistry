@@ -73,7 +73,11 @@ export default function AdminLoginPage() {
                     required
                     type="email"
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 border border-transparent focus:border-blue-500 focus:bg-white outline-none transition-all shadow-inner"
+                    className="w-full pl-12 pr-4 py-4 rounded-2xl 
+           bg-gray-50 border border-transparent 
+           text-gray-900 placeholder:text-gray-500
+           focus:border-blue-500 focus:bg-white 
+           focus:outline-none transition-all shadow-inner"
                     placeholder="dr.patel@clinic.com"
                   />
                 </div>
@@ -96,7 +100,11 @@ export default function AdminLoginPage() {
                     required
                     type="password"
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 border border-transparent focus:border-blue-500 focus:bg-white outline-none transition-all shadow-inner"
+                    className="w-full pl-12 pr-4 py-4 rounded-2xl 
+           bg-gray-50 border border-transparent 
+           text-gray-900 placeholder:text-gray-500
+           focus:border-blue-500 focus:bg-white 
+           focus:outline-none transition-all shadow-inner"
                     placeholder="••••••••"
                   />
                 </div>
@@ -142,7 +150,11 @@ export default function AdminLoginPage() {
                     required
                     type="email"
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 border border-transparent focus:border-blue-500 focus:bg-white outline-none transition-all shadow-inner"
+                    className="w-full pl-12 pr-4 py-4 rounded-2xl 
+           bg-gray-50 border border-transparent 
+           text-gray-900 placeholder:text-gray-500
+           focus:border-blue-500 focus:bg-white 
+           focus:outline-none transition-all shadow-inner"
                     placeholder="Enter email"
                   />
                 </div>
