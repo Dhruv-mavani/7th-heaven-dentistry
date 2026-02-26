@@ -25,8 +25,7 @@ export default function ResetPasswordPage() {
       setLoading(false);
     } else {
       setSuccess(true);
-      await supabase.auth.signOut();
-      setTimeout(() => router.push("/admin/login"), 2000);
+      setTimeout(() => router.push("/admin/login"), 3000);
     }
   };
 
@@ -52,7 +51,11 @@ export default function ResetPasswordPage() {
                     type="password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 border border-transparent focus:border-blue-500 outline-none transition-all"
+                    className="w-full pl-12 pr-4 py-4 rounded-2xl 
+           bg-gray-50 border border-transparent 
+           text-gray-900 placeholder:text-gray-500
+           focus:border-blue-500 focus:bg-white
+           focus:outline-none transition-all"
                     placeholder="••••••••"
                   />
                 </div>

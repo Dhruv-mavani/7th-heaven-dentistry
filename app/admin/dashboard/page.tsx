@@ -41,18 +41,9 @@ export default function Dashboard() {
   }, [loading]);
 
   async function checkUser() {
-  const { data } = await supabase.auth.getSession();
-
-  if (!data.session) {
-    router.push("/admin/login");
-    return;
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) router.push("/admin/login");
   }
-
-  // Block recovery sessions
-  if (data.session.user?.recovery_sent_at) {
-    router.push("/admin/login");
-  }
-}
 
   async function fetchAppointments() {
     const { data } = await supabase
