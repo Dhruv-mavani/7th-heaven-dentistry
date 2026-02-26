@@ -236,8 +236,9 @@ export default function AppointmentForm() {
                 time: "", // ✅ Reset time when date changes
               })
             }
-            className="w-full p-5 border rounded-2xl text-gray-900 
-               focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-5 py-5 border rounded-2xl text-lg text-gray-900
+           appearance-none
+           focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           {/* ❌ Sunday Warning */}
