@@ -82,18 +82,28 @@ export default function ReviewsPage() {
         </div>
 
         {/* Google Reviews Button */}
-        <div className="text-center mt-16">
+        <div className="mt-16 flex justify-center gap-6 px-6 max-sm:flex-col">
       <a
         href="https://www.google.com/maps/place/Smile+Guru/@21.1458467,72.7849993,976m/data=!3m1!1e3!4m8!3m7!1s0x3be0533d348df059:0x2446751d1258df52!8m2!3d21.1458321!4d72.7878034!9m1!1b1!16s%2Fg%2F11s42q95qw?entry=ttu&g_ep=EgoyMDI2MDIyMi4wIKXMDSoASAFQAw%3D%3D"
         target="_blank"
-        className="inline-block px-10 py-4 rounded-2xl bg-gray-100 border border-gray-200 text-gray-900 font-semibold text-lg shadow-sm hover:shadow-md hover:bg-gray-200 transition"
+        className="inline-block px-10 py-4 text-lg
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:w-full max-sm:text-center
+           rounded-2xl bg-gray-100 border border-gray-200
+           text-gray-900 font-semibold shadow-sm
+           hover:shadow-md hover:bg-gray-200 transition"
       >
         ⭐ View All Google Reviews
       </a>
 
       <a
         href="/book"
-        className="inline-block px-10 py-4 ml-10 rounded-2xl bg-blue-600 border border-gray-200 text-white font-semibold text-lg shadow-sm hover:shadow-md hover:bg-blue-700 transition"
+        className="inline-block px-10 py-4 text-lg
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:w-full max-sm:text-center
+           rounded-2xl bg-blue-600
+           text-white font-semibold shadow-sm
+           hover:shadow-md hover:bg-blue-700 transition"
       >
         Book Appointment
       </a>
