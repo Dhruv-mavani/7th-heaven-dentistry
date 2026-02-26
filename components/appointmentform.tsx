@@ -224,7 +224,7 @@ export default function AppointmentForm() {
 
       {/* STEP 2: Date */}
       {step === 2 && (
-        <div className="space-y-6">
+        <div className="space-y-4">
           <input
             type="date"
             min={new Date().toISOString().split("T")[0]} // ✅ No past dates
@@ -236,9 +236,8 @@ export default function AppointmentForm() {
                 time: "", // ✅ Reset time when date changes
               })
             }
-            className="w-full p-5 border rounded-2xl text-lg 
-           text-gray-900 placeholder:text-gray-500
-           focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-5 border rounded-2xl text-gray-900 
+               focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           {/* ❌ Sunday Warning */}
