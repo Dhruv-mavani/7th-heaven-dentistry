@@ -56,7 +56,7 @@ export default function Home() {
 
     
 
-    <main>
+    <main className="overflow-x-hidden">
 
       
       {/* ================= HERO SECTION ================= */}
@@ -83,7 +83,7 @@ export default function Home() {
 
 
             {/* Headline */}
-            <h1 className="font-serif text-center mt-50 text-6xl font-bold bg-gradient-to-r from-white via-gray-300 to-blue-400 bg-[length:200%_200%] animate-gradient bg-clip-text text-transparent">
+            <h1 className="font-serif text-center mt-50 text-6xl max-md:text-4xl max-sm:text-3xl font-bold bg-gradient-to-r from-white via-gray-300 to-blue-400 bg-[length:200%_200%] animate-gradient bg-clip-text text-transparent">
               Welcome to Smile Guru <br />
               <span className="text-blue-300 italic bg-gradient-to-r from-blue-400 via-gray-300 to-white bg-[length:200%_200%] animate-gradient bg-clip-text text-transparent">
                 Where Smiles Shine
@@ -91,10 +91,13 @@ export default function Home() {
             </h1>
 
             {/* CTA Buttons */}
-            <div className="flex justify-center flex-col sm:flex-row gap-4 pt-2">
+            <div className="flex justify-center text-center flex-col sm:flex-row gap-4 pt-2">
               <a
                 href="/book"
-                className="px-8 py-4 rounded-2xl bg-blue-600 text-white font-semibold text-lg shadow-xl hover:bg-blue-700 transition"
+                className="px-8 py-4 text-lg 
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:px-5 max-sm:py-2.5 max-sm:text-sm
+           rounded-2xl bg-blue-600 text-white shadow-xl hover:bg-blue-700 transition"
               >
                 Book Appointment
               </a>
@@ -102,14 +105,17 @@ export default function Home() {
               <a
                 href="https://wa.me/919825130447"
                 target="_blank"
-                className="px-8 py-4 rounded-2xl bg-white/10 backdrop-blur-md text-white font-semibold text-lg border border-white/20 hover:bg-white/20 transition"
+                className="px-8 py-4 text-lg 
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:px-5 max-sm:py-2.5 max-sm:text-sm
+           rounded-2xl bg-blue-600 text-white rounded-2xl bg-white/10 backdrop-blur-md text-white font-semibold text-lg border border-white/20 hover:bg-white/20 transition"
               >
                 Message on WhatsApp
               </a>
             </div>
 
             {/* Trust Indicators */}
-            <div className="flex justify-center gap-6 pt-6 text-gray-200 text-sm">
+            <div className="flex justify-center gap-6 pt-6 text-gray-200 text-sm max-sm:flex-col max-sm:items-center">
               <span>⭐ 100+ Happy Patients</span>
               <span>🦷 Advanced Equipment</span>
               <span>😊 Family Friendly</span>
@@ -120,7 +126,7 @@ export default function Home() {
 
       {/* ================= FEATURE CARDS SECTION ================= */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-8 max-sm:px-4">
 
           {/* Section Heading */}
           <div className="text-center max-w-2xl mx-auto space-y-4">
@@ -192,7 +198,7 @@ export default function Home() {
 
       {/* ================= SERVICES SECTION ================= */}
 <section className="py-24 bg-gray-50">
-  <div className="max-w-7xl mx-auto px-8">
+  <div className="max-w-7xl mx-auto px-8 max-sm:px-4">
 
     {/* Heading */}
     <div className="text-center max-w-2xl mx-auto space-y-4">
@@ -230,16 +236,22 @@ export default function Home() {
 
 
     {/* CTA */}
-    <div className="text-center mt-16">
+    <div className="text-center mt-16 flex justify-center gap-6 max-sm:flex-col max-sm:items-center">
       <a
         href="/book"
-        className="inline-block px-10 py-4 rounded-2xl bg-blue-600 text-white font-semibold text-lg shadow-lg hover:bg-blue-700 transition"
+        className="inline-block px-8 py-4 text-lg 
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:px-5 max-sm:py-2.5 max-sm:text-sm
+           rounded-2xl bg-blue-600 text-white rounded-2xl bg-blue-600 text-white font-semibold text-lg shadow-lg hover:bg-blue-700 transition"
       >
         Book an Appointment
       </a>
       <a
         href="/services"
-        className="inline-block px-10 py-4 ml-10 rounded-2xl bg-white text-black font-semibold text-lg border border-gray-200 hover:bg-gray-100 transition"
+        className="inline-block px-8 py-4 text-lg 
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:px-5 max-sm:py-2.5 max-sm:text-sm
+           rounded-2xl bg-blue-600 text-black rounded-2xl bg-white text-black font-semibold text-lg border border-gray-200 hover:bg-gray-100 transition"
       >
         View More Services
       </a>
@@ -249,7 +261,7 @@ export default function Home() {
 
 {/* ================= CLINIC SECTION ================= */}
 <section className="py-24 bg-white">
-  <div className="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-14 items-center">
+  <div className="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-14 max-md:gap-8 items-center">
 
     {/* Left - CLINIC Image */}
     <div className="flex justify-center">
@@ -258,7 +270,7 @@ export default function Home() {
         <img
           src="/images/aboutus2.png"
           alt="Clinic Image"
-          className="w-[580px] rounded-3xl shadow-2xl object-cover"
+          className="w-[580px] max-md:w-full rounded-3xl shadow-2xl object-cover"
         />
       </div>
     </div>
@@ -298,7 +310,10 @@ export default function Home() {
       <div className="pt-6 flex justify-center">
         <a
           href="/book"
-          className="inline-block px-10 py-4 rounded-2xl bg-blue-600 text-white font-semibold text-lg shadow-lg hover:bg-blue-700 transition"
+          className="inline-block px-8 py-4 text-lg 
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:px-5 max-sm:py-2.5 max-sm:text-sm
+           rounded-2xl bg-blue-600 rounded-2xl bg-blue-600 text-white font-semibold text-lg shadow-lg hover:bg-blue-700 transition"
         >
           Book Appointment
         </a>
@@ -309,7 +324,7 @@ export default function Home() {
 
 {/* ================= TESTIMONIALS SECTION ================= */}
 <section className="py-24 bg-gray-50">
-  <div className="max-w-7xl mx-auto px-8">
+  <div className="max-w-7xl mx-auto px-8 max-sm:px-4">
 
     {/* Heading */}
     <div className="text-center max-w-2xl mx-auto space-y-4">
@@ -348,11 +363,14 @@ export default function Home() {
     </div>
 
     {/* Google Button */}
-    <div className="text-center mt-16">
+    <div className="text-center mt-16 flex justify-center gap-6 max-sm:flex-col max-sm:items-center">
       <a
         href="https://www.google.com/maps/place/Smile+Guru/@21.1458371,72.7852285,836m/data=!3m1!1e3!4m8!3m7!1s0x3be0533d348df059:0x2446751d1258df52!8m2!3d21.1458321!4d72.7878034!9m1!1b1!16s%2Fg%2F11s42q95qw?entry=ttu&g_ep=EgoyMDI2MDIyMi4wIKXMDSoASAFQAw%3D%3D"
         target="_blank"
-        className="inline-block px-10 py-4 rounded-2xl bg-white border border-gray-200 text-gray-900 font-semibold text-lg shadow-sm hover:shadow-md hover:bg-gray-100 transition"
+        className="inline-block px-8 py-4 text-lg 
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:px-5 max-sm:py-2.5 max-sm:text-sm
+           rounded-2xl bg-blue-600 rounded-2xl bg-white border border-gray-200 text-gray-900 font-semibold text-lg shadow-sm hover:shadow-md hover:bg-gray-100 transition"
       >
         ⭐ View All Google Reviews
       </a>
@@ -364,7 +382,7 @@ export default function Home() {
 
 {/* ================= LOCATION SECTION ================= */}
 <section className="py-24 bg-white">
-  <div className="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-14 items-center">
+  <div className="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-14 max-md:gap-8 items-center">
 
     {/* Left Info */}
     <div className="space-y-6">
@@ -430,10 +448,13 @@ export default function Home() {
 
 
       {/* CTA */}
-      <div className="flex gap-4 pt-4">
+      <div className="flex gap-4 pt-4 max-sm:flex-col">
         <a
           href="/book"
-          className="px-8 py-4 rounded-2xl bg-blue-600 text-white font-semibold shadow-lg hover:bg-blue-700 transition"
+          className="px-8 py-4 text-lg text-center
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:px-5 max-sm:py-2.5 max-sm:text-sm
+           rounded-2xl bg-blue-600 rounded-2xl bg-blue-600 text-white font-semibold shadow-lg hover:bg-blue-700 transition"
         >
           Book Appointment
         </a>
@@ -441,7 +462,10 @@ export default function Home() {
         <a
           href="https://maps.app.goo.gl/kXbcQEe6z6vJ66PR7"
           target="_blank"
-          className="px-8 py-4 rounded-2xl bg-white border border-gray-200 text-gray-900 font-semibold hover:bg-gray-100 transition"
+          className="px-8 py-4 text-lg text-center
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:px-5 max-sm:py-2.5 max-sm:text-sm
+           rounded-2xl bg-blue-600 rounded-2xl bg-white border border-gray-200 text-gray-900 font-semibold hover:bg-gray-100 transition"
         >
           Get Directions
         </a>
@@ -463,7 +487,7 @@ export default function Home() {
 
 {/* ================= LOCATION SECTION 2 ================= */}
 <section className="py-24 bg-white">
-  <div className="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-14 items-center">
+  <div className="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-14 max-md:gap-8 items-center">
 
     {/* Left Info */}
     <div className="space-y-6">
@@ -531,10 +555,13 @@ export default function Home() {
 
 
       {/* CTA */}
-      <div className="flex gap-4 pt-4">
+      <div className="flex gap-4 pt-4 max-sm:flex-col">
         <a
           href="/book"
-          className="px-8 py-4 rounded-2xl bg-blue-600 text-white font-semibold shadow-lg hover:bg-blue-700 transition"
+          className="px-8 py-4 text-lg 
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:px-5 max-sm:py-2.5 max-sm:text-sm
+           rounded-2xl bg-blue-600 text-center rounded-2xl bg-blue-600 text-white font-semibold shadow-lg hover:bg-blue-700 transition"
         >
           Book Appointment
         </a>
@@ -542,7 +569,10 @@ export default function Home() {
         <a
           href="https://maps.app.goo.gl/MHuGA966dopoeSa29"
           target="_blank"
-          className="px-8 py-4 rounded-2xl bg-white border border-gray-200 text-gray-900 font-semibold hover:bg-gray-100 transition"
+          className="px-8 py-4 text-lg 
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:px-5 max-sm:py-2.5 max-sm:text-sm
+           rounded-2xl bg-blue-600 text-center rounded-2xl bg-white border border-gray-200 text-gray-900 font-semibold hover:bg-gray-100 transition"
         >
           Get Directions
         </a>
@@ -630,14 +660,20 @@ export default function Home() {
         <a
           href="https://wa.me/919825130447"
           target="_blank"
-          className="px-8 py-4 rounded-2xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
+          className="px-8 py-4 text-lg 
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:px-5 max-sm:py-2.5 max-sm:text-sm
+           rounded-2xl bg-blue-600 rounded-2xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
         >
           Message on WhatsApp
         </a>
 
         <a
           href="/contact"
-          className="px-8 py-4 rounded-2xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+          className="px-8 py-4 text-lg 
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:px-5 max-sm:py-2.5 max-sm:text-sm
+           rounded-2xl bg-blue-600 rounded-2xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
         >
           Contact Us
         </a>
@@ -664,7 +700,7 @@ function FeatureCard({
   desc: string;
 }) {
   return (
-    <div className="group p-12 rounded-3xl border border-gray-200 shadow-sm hover:shadow-md transition hover:-translate-y-1 text-center">
+    <div className="group p-12 max-sm:p-8 rounded-3xl border border-gray-200 shadow-sm hover:shadow-md transition hover:-translate-y-1 text-center">
 
       {/* Icon */}
       <div className="w-16 h-16 mx-auto flex items-center justify-center rounded-2xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition">

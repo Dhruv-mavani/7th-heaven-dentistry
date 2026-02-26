@@ -25,7 +25,10 @@ export default function Footer() {
 
       <a
         href="/book"
-        className="inline-block mt-4 px-6 py-3 rounded-2xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+        className="inline-block mt-4 px-8 py-4 text-lg 
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:px-5 max-sm:py-2.5 max-sm:text-sm
+           rounded-2xl bg-blue-600 rounded-2xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
       >
         Book Appointment
       </a>
@@ -81,7 +84,10 @@ export default function Footer() {
       <a
         href="https://wa.me/919825130447"
         target="_blank"
-        className="inline-block px-6 py-3 rounded-2xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
+        className="inline-block px-8 py-4 text-lg 
+           max-md:px-6 max-md:py-3 max-md:text-base
+           max-sm:px-5 max-sm:py-2.5 max-sm:text-sm
+           rounded-2xl bg-blue-600 rounded-2xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
       >
         Message on WhatsApp
       </a>

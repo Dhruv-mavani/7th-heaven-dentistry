@@ -1,8 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar({ solid = false }: { solid?: boolean }) {
+  const [open, setOpen] = useState(false);
+
   return (
     <header
       className={`w-full z-50 ${
@@ -12,7 +16,7 @@ export default function Navbar({ solid = false }: { solid?: boolean }) {
       }`}
     >
       <nav
-        className={`max-w-7xl mx-auto px-8 lg:px-16 py-6 flex items-center justify-between rounded-3xl mt-6 ${
+        className={`max-w-7xl mx-auto px-6 lg:px-12 xl:px-16 max-sm:px-4 py-3 flex items-center justify-between rounded-3xl mt-6 ${
           solid
             ? "bg-gray-300"
             : "bg-white/10 backdrop-blur-md border border-white/20"
@@ -22,14 +26,14 @@ export default function Navbar({ solid = false }: { solid?: boolean }) {
         <Link href="/" className="flex items-center gap-3">
           <img
             src="/images/logo.png"
-            alt="7th Heaven Dentistry Logo"
-            className="w-10 h-10 object-contain scale-440"
+            alt="Smile Guru Logo"
+            className="h-12 w-auto scale-[2.2] origin-left object-contain"
           />
         </Link>
 
-        {/* Nav Links */}
+        {/* Desktop Nav Links (UNCHANGED) */}
         <div
-          className={`hidden md:flex gap-20 text-lg font-medium ${
+          className={`hidden lg:flex gap-12 xl:gap-20 text-base xl:text-lg font-medium ${
             solid ? "text-gray-700" : "text-gray-200"
           }`}
         >
@@ -50,14 +54,57 @@ export default function Navbar({ solid = false }: { solid?: boolean }) {
           </Link>
         </div>
 
-        {/* CTA Button */}
+        {/* Desktop CTA (UNCHANGED) */}
         <Link
           href="/book"
-          className="px-6 py-3 rounded-2xl bg-blue-600 text-white font-semibold text-lg shadow-lg hover:bg-blue-700 transition"
+          className="hidden lg:inline-block px-6 py-3 rounded-2xl bg-blue-600 text-white font-semibold text-base xl:text-lg shadow-lg hover:bg-blue-700 transition"
         >
           Book Appointment
         </Link>
+
+        {/* Mobile Hamburger */}
+        <button
+          onClick={() => setOpen(!open)}
+          className="lg:hidden text-white"
+        >
+          {open ? <X size={28} /> : <Menu size={28} />}
+        </button>
       </nav>
+
+      {/* Mobile Menu */}
+      {open && (
+        <div
+          className={`lg:hidden mx-4 mt-4 rounded-3xl p-6 space-y-6 ${
+            solid
+              ? "bg-gray-300 text-gray-700"
+              : "bg-white/10 backdrop-blur-md border border-white/20 text-white"
+          }`}
+        >
+          <Link href="/" onClick={() => setOpen(false)} className="block">
+            Home
+          </Link>
+          <Link href="/services" onClick={() => setOpen(false)} className="block">
+            Services
+          </Link>
+          <Link href="/about" onClick={() => setOpen(false)} className="block">
+            About Us
+          </Link>
+          <Link href="/contact" onClick={() => setOpen(false)} className="block">
+            Contact Us
+          </Link>
+          <Link href="/reviews" onClick={() => setOpen(false)} className="block">
+            Reviews
+          </Link>
+
+          <Link
+            href="/book"
+            onClick={() => setOpen(false)}
+            className="block text-center px-6 py-3 rounded-2xl bg-blue-600 text-white font-semibold"
+          >
+            Book Appointment
+          </Link>
+        </div>
+      )}
     </header>
   );
 }
