@@ -203,7 +203,11 @@ export default function AppointmentForm() {
                 setForm({ ...form, service: s });
                 next();
               }}
-              className="p-5 rounded-2xl border text-left hover:border-blue-600 hover:bg-blue-50 transition"
+              className={`p-5 rounded-2xl border text-left transition
+  ${form.service === s
+    ? "bg-blue-600 text-white border-blue-600"
+    : "bg-white text-gray-900 hover:border-blue-600 hover:bg-blue-50"}
+`}
             >
               {s}
             </button>
@@ -211,7 +215,7 @@ export default function AppointmentForm() {
         </div>
         <a
         href="/"
-        className="block w-full bg-gray-100 text-gray-800 px-58 py-4 pt-3 mt-5 rounded-2xl font-semibold hover:bg-gray-200 transition"
+        className="block w-full bg-gray-100 text-gray-800 px-6 py-4 pt-3 mt-5 rounded-2xl font-semibold hover:bg-gray-200 transition"
       >
         Back to Home
       </a>
@@ -253,7 +257,7 @@ export default function AppointmentForm() {
             <button
               onClick={next}
               disabled={!form.date || isSunday(form.date)} // ❌ Block Sunday
-              className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold disabled:bg-gray-300"
+              className="bg-blue-600 text-white px-8 py-4 max-[400px]:px-6 max-[400px]:py-3 max-[400px]:px-6 max-[400px]:py-3 max-[400px]:px-6 max-[400px]:py-3 max-[400px]:px-6 max-[400px]:py-3 max-[400px]:px-6 max-[400px]:py-3 max-[400px]:px-6 max-[400px]:py-3 max-[400px]:px-6 max-[400px]:py-3 rounded-2xl font-semibold disabled:bg-gray-300"
             >
               Continue
             </button>
@@ -261,7 +265,7 @@ export default function AppointmentForm() {
 
           <a
         href="/"
-        className="block w-full bg-gray-100 text-gray-800 px-55 py-4 rounded-2xl font-semibold hover:bg-gray-200 transition"
+        className="block w-full bg-gray-100 text-gray-800 px-6 py-4 rounded-2xl font-semibold hover:bg-gray-200 transition"
       >
         Back to Home
       </a>
@@ -271,15 +275,15 @@ export default function AppointmentForm() {
       {/* STEP 3: Time Slots */}
       {step === 3 && (
   <div className="space-y-6">
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-3 max-sm:grid-cols-2 gap-4">
       {getAvailableSlots().map((t) => (
         <button
           key={t}
           onClick={() => setForm({ ...form, time: t })}
           className={`py-4 rounded-2xl border transition ${
             form.time === t
-              ? "bg-blue-600 text-white"
-              : "hover:bg-blue-50"
+              ? "bg-blue-600 text-white border-blue-600"
+              : "bg-white text-gray-900 hover:bg-blue-50 hover:border-blue-400"
           }`}
         >
           {t}
@@ -306,7 +310,7 @@ export default function AppointmentForm() {
       <button
         onClick={next}
         disabled={!form.time} // ✅ MUST select time
-        className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold disabled:bg-gray-300"
+        className="bg-blue-600 text-white px-8 py-4 max-[400px]:px-6 max-[400px]:py-3 max-[400px]:px-6 max-[400px]:py-3 max-[400px]:px-6 max-[400px]:py-3 max-[400px]:px-6 max-[400px]:py-3 max-[400px]:px-6 max-[400px]:py-3 max-[400px]:px-6 max-[400px]:py-3 max-[400px]:px-6 max-[400px]:py-3 rounded-2xl font-semibold disabled:bg-gray-300"
       >
         Continue
       </button>
@@ -314,7 +318,7 @@ export default function AppointmentForm() {
 
     <a
         href="/"
-        className="block w-full bg-gray-100 text-gray-800 px-55 py-4 rounded-2xl font-semibold hover:bg-gray-200 transition"
+        className="block w-full bg-gray-100 text-gray-800 px-6 py-4 rounded-2xl font-semibold hover:bg-gray-200 transition"
       >
         Back to Home
       </a>
@@ -368,7 +372,7 @@ export default function AppointmentForm() {
           </div>
           <a
         href="/"
-        className="block w-full bg-gray-100 text-gray-800 px-55 py-4 rounded-2xl font-semibold hover:bg-gray-200 transition"
+        className="block w-full bg-gray-100 text-gray-800 px-6 py-4 rounded-2xl font-semibold hover:bg-gray-200 transition"
       >
         Back to Home
       </a>

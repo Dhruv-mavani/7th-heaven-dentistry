@@ -171,7 +171,7 @@ export default function Home() {
       <FeatureCard
         icon={<ShieldCheck size={32} />}
         title="Trusted Clinic"
-        desc="Hundreds of happy patients across Surat."
+        desc="There are Hundreds of happy patients across Surat."
       />
     </SwiperSlide>
 
@@ -187,7 +187,7 @@ export default function Home() {
       <FeatureCard
         icon={<Sparkles size={32} />}
         title="Modern Equipment"
-        desc="Latest technology for precise, safe results."
+        desc="We use Latest technology for precise and safe results."
       />
     </SwiperSlide>
   </Swiper>
