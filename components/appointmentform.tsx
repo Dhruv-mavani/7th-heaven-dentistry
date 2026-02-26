@@ -1,6 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 const services = [
   "Dental Fillings",
@@ -95,35 +101,47 @@ export default function AppointmentForm() {
     setStep((s) => s - 1);
   }
 
-  async function submitBooking() {
+ async function submitBooking() {
+  // 1. Validation
   if (!form.name.trim()) {
     alert("Please enter your full name.");
     return;
   }
 
   if (!/^[6-9]\d{9}$/.test(form.phone)) {
-  alert("Please enter a valid 10-digit phone number.");
-  return;
-}
-
+    alert("Please enter a valid 10-digit phone number.");
+    return;
+  }
 
   if (!form.time) {
     alert("Please select a valid time slot.");
     return;
   }
 
+  // 2. Start Loading
   setLoading(true);
 
-  await fetch("http://localhost:5000/api/appointments", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(form),
-  });
+  try {
+    // 3. Send to Supabase
+    const { error } = await supabase
+      .from('appointments') 
+      .insert([form]);
 
-  setLoading(false);
-  setSubmitted(true);
+    if (error) {
+      console.error("Error saving to Supabase:", error);
+      alert("Could not save appointment. Please check your internet.");
+    } else {
+      // 4. Success!
+      setSubmitted(true);
+    }
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    alert("An unexpected error occurred.");
+  } finally {
+    // 5. Always stop loading at the end
+    setLoading(false);
+  }
 }
-
 
   // ✅ Success Screen
   if (submitted) {

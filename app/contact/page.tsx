@@ -3,7 +3,7 @@ import { useState } from "react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { MapPin, Mail } from "lucide-react";
-
+import { supabase } from "@/lib/supabase";
 export default function ContactPage() {
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
@@ -196,46 +196,42 @@ export default function ContactPage() {
       {/* Button */}
       <button
   onClick={async () => {
-    if (!form.name.trim()) {
-  alert("Please enter your full name.");
-  return;
+  // 1. Validation
+  if (!form.name.trim()) {
+    alert("Please enter your full name.");
+    return;
+  }
+  if (!/^[6-9]\d{9}$/.test(form.phone)) {
+    alert("Please enter a valid 10-digit phone number.");
+    return;
+  }
+  if (!form.message.trim()) {
+    alert("Please enter your message.");
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    // 2. Direct Insert to Supabase
+    // Make sure you create a table named 'contact_messages'
+    const { error } = await supabase
+      .from('contact_messages') 
+      .insert([form]);
+
+    if (!error) {
+  setSent(true);
+} else {
+  console.error(error);
+  alert("Could not send message. Please check your internet.");
 }
-
-if (!/^[6-9]\d{9}$/.test(form.phone)) {
-  alert("Please enter a valid 10-digit phone number.");
-  return;
-}
-
-if (!form.message.trim()) {
-  alert("Please enter your message.");
-  return;
-}
-
-
-    setLoading(true);
-
-    try {
-      const res = await fetch("http://localhost:5000/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        setSent(true);
-      } else {
-        alert("Something went wrong.");
-      }
-    } catch (err) {
-      alert("Server error.");
-    }
-
+  } catch (err) {
+    console.error("Connection error:", err);
+    alert("Server error. Please check your internet.");
+  } finally {
     setLoading(false);
-  }}
+  }
+}}
   disabled={loading}
   className={`w-full py-4 rounded-2xl font-semibold transition-all duration-300 ${
     loading
