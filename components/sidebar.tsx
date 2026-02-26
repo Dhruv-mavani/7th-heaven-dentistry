@@ -8,7 +8,13 @@ import { LayoutDashboard, MessageSquare, LogOut, User, Plus, Calendar } from "lu
 import PatientModal from "@/components/PatientModal";
 import { supabase } from "@/lib/supabase";
 
-export default function Sidebar() {
+export default function Sidebar({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: (v: boolean) => void;
+}) {
   const pathname = usePathname();
   const router = useRouter(); // Initialize router
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -72,8 +78,19 @@ export default function Sidebar() {
 
   return (
     <>
-      <aside className="w-72 m-6 mr-0 rounded-[2.5rem] bg-white/40 backdrop-blur-2xl border border-white/60 shadow-sm p-8 flex flex-col h-[calc(100vh-48px)]">
-        
+      <aside
+  className={`
+    fixed md:relative top-0 left-0 z-50
+    h-screen md:h-[calc(100vh-48px)]
+    w-72
+    transition-transform duration-300 ease-in-out
+    ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+    m-0 md:m-6 md:mr-0
+    rounded-none md:rounded-[2.5rem]
+    bg-white/40 backdrop-blur-2xl border border-white/60 shadow-sm
+    p-8 flex flex-col
+  `}
+>      
         {/* TOP SECTION: Branding */}
         <div className="flex-1">
           <div className="relative h-24 mb-10 p-4 bg-gradient-to-r from-blue-200 via-gray-300 to-blue-300 animate-gradient text-transparent rounded-[2rem] border border-blue-600/10 flex items-center">

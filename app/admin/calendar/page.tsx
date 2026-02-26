@@ -107,7 +107,7 @@ export default function DrKartikCalendar() {
   const progressPercentage = totalToday > 0 ? Math.round((completedToday / totalToday) * 100) : 0;
 
   return (
-    <div className="h-screen w-full flex bg-white overflow-hidden font-sans">
+    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-white overflow-hidden font-sans">
       
       {/* LEFT SIDE: CALENDAR GRID */}
       <div className="flex-1 flex flex-col min-w-0">
@@ -157,7 +157,7 @@ export default function DrKartikCalendar() {
       </div>
 
       {/* RIGHT SIDE: DAILY STATS & LIST */}
-      <aside className="w-[400px] bg-slate-50/50 flex flex-col border-l border-slate-100">
+      <aside className="w-full lg:w-[400px] bg-slate-50/50 flex flex-col border-t lg:border-t-0 lg:border-l border-slate-100">
         <div className="p-6 border-b border-slate-100 bg-white">
           <div className="flex items-center gap-2 text-blue-600 mb-1 font-black text-[9px] uppercase tracking-widest">
             <Timer size={12} /> {format(selectedDate, "do MMMM")}
