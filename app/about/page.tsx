@@ -26,7 +26,7 @@ export default function AboutPage() {
           <div>
         <a
         href="/book"
-        className="inline-block px-10 py-4 ml-10 rounded-2xl bg-blue-600 border border-gray-200 text-white font-semibold text-lg shadow-sm hover:shadow-md hover:bg-blue-700 transition"
+        className="inline-block px-10 py-4 rounded-2xl bg-blue-600 border border-gray-200 text-white font-semibold text-lg shadow-sm hover:shadow-md hover:bg-blue-700 transition"
       >
         Book Appointment
       </a>
