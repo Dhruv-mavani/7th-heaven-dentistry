@@ -65,7 +65,7 @@ export default function ContactPage() {
 
       <div className="flex gap-4 pt-4">
         <a
-          href="https://wa.me/919825130447"
+          href="https://wa.me/917211177727"
           target="_blank"
           className="px-6 py-3 rounded-2xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
         >

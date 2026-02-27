@@ -104,7 +104,7 @@ export default function Home() {
               </a>
 
               <a
-                href="https://wa.me/919825130447"
+                href="https://wa.me/917211177727"
                 target="_blank"
                 className="px-8 py-4 text-lg 
            max-md:px-6 max-md:py-3 max-md:text-base
@@ -659,7 +659,7 @@ export default function Home() {
 
       <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
         <a
-          href="https://wa.me/919825130447"
+          href="https://wa.me/917211177727"
           target="_blank"
           className="px-8 py-4 text-lg 
            max-md:px-6 max-md:py-3 max-md:text-base
