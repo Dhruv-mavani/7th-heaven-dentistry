@@ -23,7 +23,7 @@ export default function Navbar({ solid = false }: { solid?: boolean }) {
         }`}
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3 pr-8">
           <img
             src="/images/logo.png"
             alt="Smile Guru Logo"
@@ -39,6 +39,9 @@ export default function Navbar({ solid = false }: { solid?: boolean }) {
         >
           <Link href="/" className="hover:text-blue-400 transition">
             Home
+          </Link>
+          <Link href="https://sanginiadvancedwomenscare.myshopify.com" className="hover:text-blue-400 transition">
+            Pregnancy
           </Link>
           <Link href="/services" className="hover:text-blue-400 transition">
             Services
@@ -82,6 +85,9 @@ export default function Navbar({ solid = false }: { solid?: boolean }) {
         >
           <Link href="/" onClick={() => setOpen(false)} className="block">
             Home
+          </Link>
+          <Link href="https://sanginiadvancedwomenscare.myshopify.com" onClick={() => setOpen(false)} className="block">
+            Pregnancy
           </Link>
           <Link href="/services" onClick={() => setOpen(false)} className="block">
             Services
