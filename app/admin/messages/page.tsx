@@ -284,7 +284,6 @@ export default function MessagesPage() {
               <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Outbound Channel</label>
               <div className="flex p-1 bg-slate-100 rounded-xl">
                 <button type="button" onClick={() => setSelectedChannel("whatsapp")} className={`flex-1 py-3 rounded-lg text-[10px] font-black uppercase transition-all ${selectedChannel === "whatsapp" ? "bg-white text-emerald-600 shadow-sm" : "text-slate-400"}`}>WhatsApp</button>
-                <button type="button" onClick={() => setSelectedChannel("sms")} className={`flex-1 py-3 rounded-lg text-[10px] font-black uppercase transition-all ${selectedChannel === "sms" ? "bg-white text-blue-600 shadow-sm" : "text-slate-400"}`}>SMS</button>
               </div>
             </div>
             <button type="submit" className="w-full py-4 bg-blue-600 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-slate-900 transition-all shadow-xl shadow-blue-100 flex items-center justify-center gap-3">
