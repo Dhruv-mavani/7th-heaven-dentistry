@@ -9,7 +9,7 @@ export default function Navbar({ solid = false }: { solid?: boolean }) {
 
   return (
     <header
-      className={`w-full z-50 ${
+      className={`w-full pl-1.5 pr-1.5 z-50 ${
         solid
           ? "relative bg-gray-300 border-b border-gray-200"
           : "absolute top-0 left-0"
